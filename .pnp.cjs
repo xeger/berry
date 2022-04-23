@@ -49500,7 +49500,13 @@ function patchFs(patchedFs, fakeFs) {
           continue;
         if (fnName === `open`)
           continue;
-        setupFn(patchedFsPromises, origName, fakeImpl.bind(fakeFs));
+        setupFn(patchedFsPromises, origName, (pathLike, ...args) => {
+          if (pathLike instanceof FileHandle) {
+            return pathLike[origName].apply(pathLike, args);
+          } else {
+            return fakeImpl.call(fakeFs, pathLike, ...args);
+          }
+        });
       }
       setupFn(patchedFsPromises, `open`, async (...args) => {
         const fd = await fakeFs.openPromise(...args);
