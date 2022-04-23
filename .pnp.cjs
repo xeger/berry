@@ -45718,25 +45718,25 @@ function convertPath(targetPathUtils, sourcePath) {
   return targetPathUtils === npath ? fromPortablePath(sourcePath) : toPortablePath(sourcePath);
 }
 
-var __defProp$4 = Object.defineProperty;
-var __defProps$2 = Object.defineProperties;
-var __getOwnPropDescs$2 = Object.getOwnPropertyDescriptors;
-var __getOwnPropSymbols$5 = Object.getOwnPropertySymbols;
-var __hasOwnProp$5 = Object.prototype.hasOwnProperty;
-var __propIsEnum$5 = Object.prototype.propertyIsEnumerable;
-var __defNormalProp$4 = (obj, key, value) => key in obj ? __defProp$4(obj, key, {enumerable: true, configurable: true, writable: true, value}) : obj[key] = value;
-var __spreadValues$4 = (a, b) => {
+var __defProp$5 = Object.defineProperty;
+var __defProps$3 = Object.defineProperties;
+var __getOwnPropDescs$3 = Object.getOwnPropertyDescriptors;
+var __getOwnPropSymbols$6 = Object.getOwnPropertySymbols;
+var __hasOwnProp$6 = Object.prototype.hasOwnProperty;
+var __propIsEnum$6 = Object.prototype.propertyIsEnumerable;
+var __defNormalProp$5 = (obj, key, value) => key in obj ? __defProp$5(obj, key, {enumerable: true, configurable: true, writable: true, value}) : obj[key] = value;
+var __spreadValues$5 = (a, b) => {
   for (var prop in b || (b = {}))
-    if (__hasOwnProp$5.call(b, prop))
-      __defNormalProp$4(a, prop, b[prop]);
-  if (__getOwnPropSymbols$5)
-    for (var prop of __getOwnPropSymbols$5(b)) {
-      if (__propIsEnum$5.call(b, prop))
-        __defNormalProp$4(a, prop, b[prop]);
+    if (__hasOwnProp$6.call(b, prop))
+      __defNormalProp$5(a, prop, b[prop]);
+  if (__getOwnPropSymbols$6)
+    for (var prop of __getOwnPropSymbols$6(b)) {
+      if (__propIsEnum$6.call(b, prop))
+        __defNormalProp$5(a, prop, b[prop]);
     }
   return a;
 };
-var __spreadProps$2 = (a, b) => __defProps$2(a, __getOwnPropDescs$2(b));
+var __spreadProps$3 = (a, b) => __defProps$3(a, __getOwnPropDescs$3(b));
 const defaultTime = new Date(SAFE_TIME * 1e3);
 var LinkStrategy;
 (function(LinkStrategy2) {
@@ -45751,7 +45751,7 @@ async function copyPromise(destinationFs, destination, sourceFs, source, opts) {
   const {atime, mtime} = opts.stableTime ? {atime: defaultTime, mtime: defaultTime} : await sourceFs.lstatPromise(normalizedSource);
   await destinationFs.mkdirpPromise(destinationFs.pathUtils.dirname(destination), {utimes: [atime, mtime]});
   const updateTime = typeof destinationFs.lutimesPromise === `function` ? destinationFs.lutimesPromise.bind(destinationFs) : destinationFs.utimesPromise.bind(destinationFs);
-  await copyImpl(prelayout, postlayout, updateTime, destinationFs, normalizedDestination, sourceFs, normalizedSource, __spreadProps$2(__spreadValues$4({}, opts), {didParentExist: true}));
+  await copyImpl(prelayout, postlayout, updateTime, destinationFs, normalizedDestination, sourceFs, normalizedSource, __spreadProps$3(__spreadValues$5({}, opts), {didParentExist: true}));
   for (const operation of prelayout)
     await operation();
   await Promise.all(postlayout.map((operation) => {
@@ -45825,7 +45825,7 @@ async function copyFolder(prelayout, postlayout, updateTime, destinationFs, dest
     updated = true;
   }
   const entries = await sourceFs.readdirPromise(source);
-  const nextOpts = opts.didParentExist && !destinationStat ? __spreadProps$2(__spreadValues$4({}, opts), {didParentExist: false}) : opts;
+  const nextOpts = opts.didParentExist && !destinationStat ? __spreadProps$3(__spreadValues$5({}, opts), {didParentExist: false}) : opts;
   if (opts.stableSort) {
     for (const entry of entries.sort()) {
       if (await copyImpl(prelayout, postlayout, updateTime, destinationFs, destinationFs.pathUtils.join(destination, entry), sourceFs, sourceFs.pathUtils.join(source, entry), nextOpts)) {
@@ -46898,19 +46898,19 @@ function unwatchAllFiles(fakeFs) {
   }
 }
 
-var __defProp$3 = Object.defineProperty;
-var __getOwnPropSymbols$4 = Object.getOwnPropertySymbols;
-var __hasOwnProp$4 = Object.prototype.hasOwnProperty;
-var __propIsEnum$4 = Object.prototype.propertyIsEnumerable;
-var __defNormalProp$3 = (obj, key, value) => key in obj ? __defProp$3(obj, key, {enumerable: true, configurable: true, writable: true, value}) : obj[key] = value;
-var __spreadValues$3 = (a, b) => {
+var __defProp$4 = Object.defineProperty;
+var __getOwnPropSymbols$5 = Object.getOwnPropertySymbols;
+var __hasOwnProp$5 = Object.prototype.hasOwnProperty;
+var __propIsEnum$5 = Object.prototype.propertyIsEnumerable;
+var __defNormalProp$4 = (obj, key, value) => key in obj ? __defProp$4(obj, key, {enumerable: true, configurable: true, writable: true, value}) : obj[key] = value;
+var __spreadValues$4 = (a, b) => {
   for (var prop in b || (b = {}))
-    if (__hasOwnProp$4.call(b, prop))
-      __defNormalProp$3(a, prop, b[prop]);
-  if (__getOwnPropSymbols$4)
-    for (var prop of __getOwnPropSymbols$4(b)) {
-      if (__propIsEnum$4.call(b, prop))
-        __defNormalProp$3(a, prop, b[prop]);
+    if (__hasOwnProp$5.call(b, prop))
+      __defNormalProp$4(a, prop, b[prop]);
+  if (__getOwnPropSymbols$5)
+    for (var prop of __getOwnPropSymbols$5(b)) {
+      if (__propIsEnum$5.call(b, prop))
+        __defNormalProp$4(a, prop, b[prop]);
     }
   return a;
 };
@@ -47668,7 +47668,7 @@ class ZipFS extends BasePortableFakeFS {
     else if (typeof opts === `string`)
       opts = {flag: `a`, encoding: opts};
     else if (typeof opts.flag === `undefined`)
-      opts = __spreadValues$3({flag: `a`}, opts);
+      opts = __spreadValues$4({flag: `a`}, opts);
     return this.writeFilePromise(p, content, opts);
   }
   appendFileSync(p, content, opts = {}) {
@@ -47679,7 +47679,7 @@ class ZipFS extends BasePortableFakeFS {
     else if (typeof opts === `string`)
       opts = {flag: `a`, encoding: opts};
     else if (typeof opts.flag === `undefined`)
-      opts = __spreadValues$3({flag: `a`}, opts);
+      opts = __spreadValues$4({flag: `a`}, opts);
     return this.writeFileSync(p, content, opts);
   }
   fdToPath(fd, reason) {
@@ -49104,6 +49104,125 @@ class URLFS extends ProxiedFS {
   }
 }
 
+var __defProp$3 = Object.defineProperty;
+var __defProps$2 = Object.defineProperties;
+var __getOwnPropDescs$2 = Object.getOwnPropertyDescriptors;
+var __getOwnPropSymbols$4 = Object.getOwnPropertySymbols;
+var __hasOwnProp$4 = Object.prototype.hasOwnProperty;
+var __propIsEnum$4 = Object.prototype.propertyIsEnumerable;
+var __defNormalProp$3 = (obj, key, value) => key in obj ? __defProp$3(obj, key, {enumerable: true, configurable: true, writable: true, value}) : obj[key] = value;
+var __spreadValues$3 = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp$4.call(b, prop))
+      __defNormalProp$3(a, prop, b[prop]);
+  if (__getOwnPropSymbols$4)
+    for (var prop of __getOwnPropSymbols$4(b)) {
+      if (__propIsEnum$4.call(b, prop))
+        __defNormalProp$3(a, prop, b[prop]);
+    }
+  return a;
+};
+var __spreadProps$2 = (a, b) => __defProps$2(a, __getOwnPropDescs$2(b));
+class FileHandle {
+  constructor(fd, baseFs) {
+    this.fd = fd;
+    this._closePromise = null;
+    this._baseFs = baseFs;
+  }
+  appendFile(data, options) {
+    var _a;
+    const encoding = (_a = typeof options === `string` ? options : options == null ? void 0 : options.encoding) != null ? _a : void 0;
+    return this._baseFs.appendFilePromise(this.fd, data, encoding ? {encoding} : void 0);
+  }
+  chown(uid, gid) {
+    throw new Error(`Method not implemented.`);
+  }
+  chmod(mode) {
+    throw new Error(`Method not implemented.`);
+  }
+  createReadStream(options) {
+    return this._baseFs.createReadStream(null, __spreadProps$2(__spreadValues$3({}, options), {fd: this.fd}));
+  }
+  createWriteStream(options) {
+    return this._baseFs.createWriteStream(null, __spreadProps$2(__spreadValues$3({}, options), {fd: this.fd}));
+  }
+  datasync() {
+    throw new Error(`Method not implemented.`);
+  }
+  sync() {
+    throw new Error(`Method not implemented.`);
+  }
+  async read(bufferOrOptions, offset, length, position) {
+    var _a, _b, _c;
+    let buffer;
+    if (!Buffer.isBuffer(bufferOrOptions)) {
+      bufferOrOptions != null ? bufferOrOptions : bufferOrOptions = {};
+      buffer = (_a = bufferOrOptions.buffer) != null ? _a : Buffer.alloc(16384);
+      offset = bufferOrOptions.offset || 0;
+      length = (_b = bufferOrOptions.length) != null ? _b : buffer.byteLength;
+      position = (_c = bufferOrOptions.position) != null ? _c : null;
+    } else {
+      buffer = bufferOrOptions;
+    }
+    offset != null ? offset : offset = 0;
+    length != null ? length : length = 0;
+    if (length === 0) {
+      return {
+        bytesRead: length,
+        buffer
+      };
+    }
+    const bytesRead = await this._baseFs.readPromise(this.fd, buffer, offset, length, position);
+    return {
+      bytesRead,
+      buffer
+    };
+  }
+  readFile(options) {
+    var _a;
+    const encoding = (_a = typeof options === `string` ? options : options == null ? void 0 : options.encoding) != null ? _a : void 0;
+    return this._baseFs.readFilePromise(this.fd, encoding);
+  }
+  stat(opts) {
+    return this._baseFs.fstatPromise(this.fd, opts);
+  }
+  truncate(len) {
+    throw new Error(`Method not implemented.`);
+  }
+  utimes(atime, mtime) {
+    throw new Error(`Method not implemented.`);
+  }
+  writeFile(data, options) {
+    var _a;
+    const encoding = (_a = typeof options === `string` ? options : options == null ? void 0 : options.encoding) != null ? _a : void 0;
+    return this._baseFs.writeFilePromise(this.fd, data, encoding);
+  }
+  async write(...args) {
+    if (ArrayBuffer.isView(args[0])) {
+      const [buffer, offset, length, position] = args;
+      const bytesWritten = await this._baseFs.writePromise(this.fd, buffer, offset != null ? offset : void 0, length != null ? length : void 0, position != null ? position : void 0);
+      return {bytesWritten, buffer};
+    } else {
+      const [data, position, encoding] = args;
+      const bytesWritten = await this._baseFs.writePromise(this.fd, data, position, encoding);
+      return {bytesWritten, buffer: data};
+    }
+  }
+  writev(buffers, position) {
+    throw new Error(`Method not implemented.`);
+  }
+  readv(buffers, position) {
+    throw new Error(`Method not implemented.`);
+  }
+  close() {
+    if (this._closePromise)
+      return this._closePromise;
+    this._closePromise = this._baseFs.closePromise(this.fd);
+    this.fd = -1;
+    return this._closePromise;
+  }
+}
+
 const SYNC_IMPLEMENTATIONS = new Set([
   `accessSync`,
   `appendFileSync`,
@@ -49166,19 +49285,6 @@ const ASYNC_IMPLEMENTATIONS = new Set([
   `utimesPromise`,
   `writeFilePromise`,
   `writeSync`
-]);
-const FILEHANDLE_IMPLEMENTATIONS = new Set([
-  `appendFilePromise`,
-  `chmodPromise`,
-  `chownPromise`,
-  `closePromise`,
-  `readPromise`,
-  `readFilePromise`,
-  `statPromise`,
-  `truncatePromise`,
-  `utimesPromise`,
-  `writePromise`,
-  `writeFilePromise`
 ]);
 function patchFs(patchedFs, fakeFs) {
   fakeFs = new URLFS(fakeFs);
@@ -49317,23 +49423,9 @@ function patchFs(patchedFs, fakeFs) {
           continue;
         setupFn(patchedFsPromises, origName, fakeImpl.bind(fakeFs));
       }
-      class FileHandle {
-        constructor(fd) {
-          this.fd = fd;
-        }
-      }
-      for (const fnName of FILEHANDLE_IMPLEMENTATIONS) {
-        const origName = fnName.replace(/Promise$/, ``);
-        const fakeImpl = fakeFs[fnName];
-        if (typeof fakeImpl === `undefined`)
-          continue;
-        setupFn(FileHandle.prototype, origName, function(...args) {
-          return fakeImpl.call(fakeFs, this.fd, ...args);
-        });
-      }
       setupFn(patchedFsPromises, `open`, async (...args) => {
         const fd = await fakeFs.openPromise(...args);
-        return new FileHandle(fd);
+        return new FileHandle(fd, fakeFs);
       });
     }
   }
