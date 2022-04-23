@@ -49123,23 +49123,36 @@ var __spreadValues$3 = (a, b) => {
   return a;
 };
 var __spreadProps$2 = (a, b) => __defProps$2(a, __getOwnPropDescs$2(b));
-var _a;
+var _a, _b, _c, _d;
 const kBaseFs = Symbol(`kBaseFs`);
 const kFd = Symbol(`kFd`);
 const kClosePromise = Symbol(`kClosePromise`);
+const kCloseResolve = Symbol(`kCloseResolve`);
+const kCloseReject = Symbol(`kCloseReject`);
+const kRefs = Symbol(`kRefs`);
+const kRef = Symbol(`kRef`);
+const kUnref = Symbol(`kUnref`);
 class FileHandle {
   constructor(fd, baseFs) {
-    this[_a] = null;
+    this[_a] = 1;
+    this[_b] = void 0;
+    this[_c] = void 0;
+    this[_d] = void 0;
     this[kBaseFs] = baseFs;
     this[kFd] = fd;
   }
   get fd() {
     return this[kFd];
   }
-  appendFile(data, options) {
+  async appendFile(data, options) {
     var _a2;
-    const encoding = (_a2 = typeof options === `string` ? options : options == null ? void 0 : options.encoding) != null ? _a2 : void 0;
-    return this[kBaseFs].appendFilePromise(this.fd, data, encoding ? {encoding} : void 0);
+    try {
+      this[kRef](this.appendFile);
+      const encoding = (_a2 = typeof options === `string` ? options : options == null ? void 0 : options.encoding) != null ? _a2 : void 0;
+      return await this[kBaseFs].appendFilePromise(this.fd, data, encoding ? {encoding} : void 0);
+    } finally {
+      this[kUnref]();
+    }
   }
   chown(uid, gid) {
     throw new Error(`Method not implemented.`);
@@ -49160,38 +49173,53 @@ class FileHandle {
     throw new Error(`Method not implemented.`);
   }
   async read(bufferOrOptions, offset, length, position) {
-    var _a2, _b, _c;
-    let buffer;
-    if (!Buffer.isBuffer(bufferOrOptions)) {
-      bufferOrOptions != null ? bufferOrOptions : bufferOrOptions = {};
-      buffer = (_a2 = bufferOrOptions.buffer) != null ? _a2 : Buffer.alloc(16384);
-      offset = bufferOrOptions.offset || 0;
-      length = (_b = bufferOrOptions.length) != null ? _b : buffer.byteLength;
-      position = (_c = bufferOrOptions.position) != null ? _c : null;
-    } else {
-      buffer = bufferOrOptions;
-    }
-    offset != null ? offset : offset = 0;
-    length != null ? length : length = 0;
-    if (length === 0) {
+    var _a2, _b2, _c2;
+    try {
+      this[kRef](this.read);
+      let buffer;
+      if (!Buffer.isBuffer(bufferOrOptions)) {
+        bufferOrOptions != null ? bufferOrOptions : bufferOrOptions = {};
+        buffer = (_a2 = bufferOrOptions.buffer) != null ? _a2 : Buffer.alloc(16384);
+        offset = bufferOrOptions.offset || 0;
+        length = (_b2 = bufferOrOptions.length) != null ? _b2 : buffer.byteLength;
+        position = (_c2 = bufferOrOptions.position) != null ? _c2 : null;
+      } else {
+        buffer = bufferOrOptions;
+      }
+      offset != null ? offset : offset = 0;
+      length != null ? length : length = 0;
+      if (length === 0) {
+        return {
+          bytesRead: length,
+          buffer
+        };
+      }
+      const bytesRead = await this[kBaseFs].readPromise(this.fd, buffer, offset, length, position);
       return {
-        bytesRead: length,
+        bytesRead,
         buffer
       };
+    } finally {
+      this[kUnref]();
     }
-    const bytesRead = await this[kBaseFs].readPromise(this.fd, buffer, offset, length, position);
-    return {
-      bytesRead,
-      buffer
-    };
   }
-  readFile(options) {
+  async readFile(options) {
     var _a2;
-    const encoding = (_a2 = typeof options === `string` ? options : options == null ? void 0 : options.encoding) != null ? _a2 : void 0;
-    return this[kBaseFs].readFilePromise(this.fd, encoding);
+    try {
+      this[kRef](this.readFile);
+      const encoding = (_a2 = typeof options === `string` ? options : options == null ? void 0 : options.encoding) != null ? _a2 : void 0;
+      return await this[kBaseFs].readFilePromise(this.fd, encoding);
+    } finally {
+      this[kUnref]();
+    }
   }
-  stat(opts) {
-    return this[kBaseFs].fstatPromise(this.fd, opts);
+  async stat(opts) {
+    try {
+      this[kRef](this.stat);
+      return await this[kBaseFs].fstatPromise(this.fd, opts);
+    } finally {
+      this[kUnref]();
+    }
   }
   truncate(len) {
     throw new Error(`Method not implemented.`);
@@ -49199,20 +49227,30 @@ class FileHandle {
   utimes(atime, mtime) {
     throw new Error(`Method not implemented.`);
   }
-  writeFile(data, options) {
+  async writeFile(data, options) {
     var _a2;
-    const encoding = (_a2 = typeof options === `string` ? options : options == null ? void 0 : options.encoding) != null ? _a2 : void 0;
-    return this[kBaseFs].writeFilePromise(this.fd, data, encoding);
+    try {
+      this[kRef](this.writeFile);
+      const encoding = (_a2 = typeof options === `string` ? options : options == null ? void 0 : options.encoding) != null ? _a2 : void 0;
+      await this[kBaseFs].writeFilePromise(this.fd, data, encoding);
+    } finally {
+      this[kUnref]();
+    }
   }
   async write(...args) {
-    if (ArrayBuffer.isView(args[0])) {
-      const [buffer, offset, length, position] = args;
-      const bytesWritten = await this[kBaseFs].writePromise(this.fd, buffer, offset != null ? offset : void 0, length != null ? length : void 0, position != null ? position : void 0);
-      return {bytesWritten, buffer};
-    } else {
-      const [data, position, encoding] = args;
-      const bytesWritten = await this[kBaseFs].writePromise(this.fd, data, position, encoding);
-      return {bytesWritten, buffer: data};
+    try {
+      this[kRef](this.write);
+      if (ArrayBuffer.isView(args[0])) {
+        const [buffer, offset, length, position] = args;
+        const bytesWritten = await this[kBaseFs].writePromise(this.fd, buffer, offset != null ? offset : void 0, length != null ? length : void 0, position != null ? position : void 0);
+        return {bytesWritten, buffer};
+      } else {
+        const [data, position, encoding] = args;
+        const bytesWritten = await this[kBaseFs].writePromise(this.fd, data, position, encoding);
+        return {bytesWritten, buffer: data};
+      }
+    } finally {
+      this[kUnref]();
     }
   }
   writev(buffers, position) {
@@ -49222,14 +49260,47 @@ class FileHandle {
     throw new Error(`Method not implemented.`);
   }
   close() {
+    if (this[kFd] === -1)
+      return Promise.resolve();
     if (this[kClosePromise])
       return this[kClosePromise];
-    this[kClosePromise] = this[kBaseFs].closePromise(this.fd);
-    this[kFd] = -1;
+    this[kRefs]--;
+    if (this[kRefs] === 0) {
+      const fd = this[kFd];
+      this[kFd] = -1;
+      this[kClosePromise] = this[kBaseFs].closePromise(fd).finally(() => {
+        this[kClosePromise] = void 0;
+      });
+    } else {
+      this[kClosePromise] = new Promise((resolve, reject) => {
+        this[kCloseResolve] = resolve;
+        this[kCloseReject] = reject;
+      }).finally(() => {
+        this[kClosePromise] = void 0;
+        this[kCloseReject] = void 0;
+        this[kCloseResolve] = void 0;
+      });
+    }
     return this[kClosePromise];
   }
+  [(_a = kRefs, _b = kClosePromise, _c = kCloseResolve, _d = kCloseReject, kRef)](caller) {
+    if (this[kFd] === -1) {
+      const err = new Error(`file closed`);
+      err.code = `EBADF`;
+      err.syscall = caller.name;
+      throw err;
+    }
+    this[kRefs]++;
+  }
+  [kUnref]() {
+    this[kRefs]--;
+    if (this[kRefs] === 0) {
+      const fd = this[kFd];
+      this[kFd] = -1;
+      this[kBaseFs].closePromise(fd).then(this[kCloseResolve], this[kCloseReject]);
+    }
+  }
 }
-_a = kClosePromise;
 
 const SYNC_IMPLEMENTATIONS = new Set([
   `accessSync`,
