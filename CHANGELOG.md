@@ -45,6 +45,10 @@ The following changes only affect people writing Yarn plugins:
 
 - The PnP ESM loader is now able to handle symlinked extensionless entrypoints.
 
+### Compatibility
+
+- The PnP filesystem now handles most of the FileHandle methods
+
 ## 3.2.0
 
 Various improvements have been made in the core to improve performance. Additionally:
