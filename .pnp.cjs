@@ -49123,16 +49123,23 @@ var __spreadValues$3 = (a, b) => {
   return a;
 };
 var __spreadProps$2 = (a, b) => __defProps$2(a, __getOwnPropDescs$2(b));
+var _a;
+const kBaseFs = Symbol(`kBaseFs`);
+const kFd = Symbol(`kFd`);
+const kClosePromise = Symbol(`kClosePromise`);
 class FileHandle {
   constructor(fd, baseFs) {
-    this.fd = fd;
-    this._closePromise = null;
-    this._baseFs = baseFs;
+    this[_a] = null;
+    this[kBaseFs] = baseFs;
+    this[kFd] = fd;
+  }
+  get fd() {
+    return this[kFd];
   }
   appendFile(data, options) {
-    var _a;
-    const encoding = (_a = typeof options === `string` ? options : options == null ? void 0 : options.encoding) != null ? _a : void 0;
-    return this._baseFs.appendFilePromise(this.fd, data, encoding ? {encoding} : void 0);
+    var _a2;
+    const encoding = (_a2 = typeof options === `string` ? options : options == null ? void 0 : options.encoding) != null ? _a2 : void 0;
+    return this[kBaseFs].appendFilePromise(this.fd, data, encoding ? {encoding} : void 0);
   }
   chown(uid, gid) {
     throw new Error(`Method not implemented.`);
@@ -49141,10 +49148,10 @@ class FileHandle {
     throw new Error(`Method not implemented.`);
   }
   createReadStream(options) {
-    return this._baseFs.createReadStream(null, __spreadProps$2(__spreadValues$3({}, options), {fd: this.fd}));
+    return this[kBaseFs].createReadStream(null, __spreadProps$2(__spreadValues$3({}, options), {fd: this.fd}));
   }
   createWriteStream(options) {
-    return this._baseFs.createWriteStream(null, __spreadProps$2(__spreadValues$3({}, options), {fd: this.fd}));
+    return this[kBaseFs].createWriteStream(null, __spreadProps$2(__spreadValues$3({}, options), {fd: this.fd}));
   }
   datasync() {
     throw new Error(`Method not implemented.`);
@@ -49153,11 +49160,11 @@ class FileHandle {
     throw new Error(`Method not implemented.`);
   }
   async read(bufferOrOptions, offset, length, position) {
-    var _a, _b, _c;
+    var _a2, _b, _c;
     let buffer;
     if (!Buffer.isBuffer(bufferOrOptions)) {
       bufferOrOptions != null ? bufferOrOptions : bufferOrOptions = {};
-      buffer = (_a = bufferOrOptions.buffer) != null ? _a : Buffer.alloc(16384);
+      buffer = (_a2 = bufferOrOptions.buffer) != null ? _a2 : Buffer.alloc(16384);
       offset = bufferOrOptions.offset || 0;
       length = (_b = bufferOrOptions.length) != null ? _b : buffer.byteLength;
       position = (_c = bufferOrOptions.position) != null ? _c : null;
@@ -49172,19 +49179,19 @@ class FileHandle {
         buffer
       };
     }
-    const bytesRead = await this._baseFs.readPromise(this.fd, buffer, offset, length, position);
+    const bytesRead = await this[kBaseFs].readPromise(this.fd, buffer, offset, length, position);
     return {
       bytesRead,
       buffer
     };
   }
   readFile(options) {
-    var _a;
-    const encoding = (_a = typeof options === `string` ? options : options == null ? void 0 : options.encoding) != null ? _a : void 0;
-    return this._baseFs.readFilePromise(this.fd, encoding);
+    var _a2;
+    const encoding = (_a2 = typeof options === `string` ? options : options == null ? void 0 : options.encoding) != null ? _a2 : void 0;
+    return this[kBaseFs].readFilePromise(this.fd, encoding);
   }
   stat(opts) {
-    return this._baseFs.fstatPromise(this.fd, opts);
+    return this[kBaseFs].fstatPromise(this.fd, opts);
   }
   truncate(len) {
     throw new Error(`Method not implemented.`);
@@ -49193,18 +49200,18 @@ class FileHandle {
     throw new Error(`Method not implemented.`);
   }
   writeFile(data, options) {
-    var _a;
-    const encoding = (_a = typeof options === `string` ? options : options == null ? void 0 : options.encoding) != null ? _a : void 0;
-    return this._baseFs.writeFilePromise(this.fd, data, encoding);
+    var _a2;
+    const encoding = (_a2 = typeof options === `string` ? options : options == null ? void 0 : options.encoding) != null ? _a2 : void 0;
+    return this[kBaseFs].writeFilePromise(this.fd, data, encoding);
   }
   async write(...args) {
     if (ArrayBuffer.isView(args[0])) {
       const [buffer, offset, length, position] = args;
-      const bytesWritten = await this._baseFs.writePromise(this.fd, buffer, offset != null ? offset : void 0, length != null ? length : void 0, position != null ? position : void 0);
+      const bytesWritten = await this[kBaseFs].writePromise(this.fd, buffer, offset != null ? offset : void 0, length != null ? length : void 0, position != null ? position : void 0);
       return {bytesWritten, buffer};
     } else {
       const [data, position, encoding] = args;
-      const bytesWritten = await this._baseFs.writePromise(this.fd, data, position, encoding);
+      const bytesWritten = await this[kBaseFs].writePromise(this.fd, data, position, encoding);
       return {bytesWritten, buffer: data};
     }
   }
@@ -49215,13 +49222,14 @@ class FileHandle {
     throw new Error(`Method not implemented.`);
   }
   close() {
-    if (this._closePromise)
-      return this._closePromise;
-    this._closePromise = this._baseFs.closePromise(this.fd);
-    this.fd = -1;
-    return this._closePromise;
+    if (this[kClosePromise])
+      return this[kClosePromise];
+    this[kClosePromise] = this[kBaseFs].closePromise(this.fd);
+    this[kFd] = -1;
+    return this[kClosePromise];
   }
 }
+_a = kClosePromise;
 
 const SYNC_IMPLEMENTATIONS = new Set([
   `accessSync`,
